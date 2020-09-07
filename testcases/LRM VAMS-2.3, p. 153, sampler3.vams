@@ -1,0 +1,14 @@
+
+module sampler3 (in, clk1, clk2, out); 
+	input in, clk1, clk2; 
+	output out; 
+	wire clk1; 
+	electrical in, clk2, out; 
+
+	analog begin 
+		@(posedge clk1 or cross(V(clk2), 1)) 
+			vout = V(in); 
+		V(out) <+ vout; 
+	end 
+endmodule 
+

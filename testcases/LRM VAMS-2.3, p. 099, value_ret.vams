@@ -1,0 +1,12 @@
+
+module value_ret(p, n); 
+	inout p, n; 
+	electrical p, n; 
+	analog begin 
+		V(p,n) <+ 1.0; // no previously-retained value, 1 is retained 
+		I(p,n) <+ 2.0; // potential discarded; flow of 2 retained 
+		V(p,n) <+ 3.0; // flow discarded; potential of 3 retained 
+		V(p,n) <+ 4.0; // 4 added to previously-retained 3 
+	end 
+endmodule 
+

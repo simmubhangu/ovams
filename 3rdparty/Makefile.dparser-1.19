@@ -1,0 +1,17 @@
+PREFIX := $(PWD)
+PATH := $(PWD)/bin:$(PATH)
+
+DPARSER_DIR := d
+DPARSER_TAR := $(DPARSER_DIR)-1.19-src.tar.gz
+DPARSER_URL := http://prdownloads.sourceforge.net/dparser/$(DPARSER_TAR)?download
+
+$(PREFIX)/bin/make-dparser: src/$(DPARSER_DIR)
+	( cd $< && make && make PREFIX=$(PREFIX) install )
+
+src/$(DPARSER_DIR): src/$(DPARSER_TAR)
+	( cd src && tar xfz $(DPARSER_TAR) )
+	-( cd src && cat ../$(notdir $(basename $(basename $(DPARSER_DIR))))*patch.diff | patch -p0 )
+
+src/$(DPARSER_TAR):
+	( mkdir -p src && cd src && wget -T 5 -t 0 -c $(DPARSER_URL) )
+

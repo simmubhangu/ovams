@@ -1,0 +1,32 @@
+
+module polyres(a, b); 
+	inout a, b; 
+	electrical a, b; 
+	parameter real length = 1u from (0:inf); 
+	parameter real width = 1u from (0:inf); 
+	real rho, reff; 
+	analog begin 
+		rho = processinfo.rho 
+			+ $xposition * processinfo.drho_dx 
+			+ $yposition * processinfo.drho_dy; 
+		reff = rho * length / width; 
+		I(a,b) <+ V(a,b) / reff; 
+	end 
+endmodule
+
+
+module matchedres(a, b); 
+	inout a, b; 
+	electrical a, b; 
+	parameter real length = 1u from (0:inf); 
+	parameter real width = 1u from (0:inf); 
+	polyres #(.width(width/4.0), .length(length), 
+		.$xposition(-1u), .$yposition(-1u)) R1 (a, b); 
+	polyres #(.width(width/4.0), .length(length), 
+		.$xposition(+1u), .$yposition(-1u)) R2 (a, b); 
+	polyres #(.width(width/4.0), .length(length), 
+		.$xposition(-1u), .$yposition(+1u)) R3 (a, b); 
+	polyres #(.width(width/4.0), .length(length), 
+		.$xposition(+1u), .$yposition(+1u)) R4 (a, b);
+endmodule
+

@@ -1,0 +1,35 @@
+
+module test_module(p,n); 
+	inout p,n; 
+	electrical p,n; 
+	module_a A1(p,n); 
+endmodule 
+
+
+module module_a(p,n); 
+	inout p,n; 
+	electrical p,n; 
+	module_b #(.$mfactor(2)) B1(p,n);  // mfactor = 3 * 2 
+endmodule 
+
+
+module module_b(p,n); 
+	inout p,n; 
+	electrical p,n; 
+	module_c #(.$mfactor(7)) C1(p,n); // mfactor = 3 * 2 * 7 = 42 
+endmodule 
+
+
+// linear resistor 
+module module_c(p,n); 
+	inout p,n; 
+	electrical p,n; 
+	parameter r=1.0; 
+	(* desc = "effective resistance" *) real reff; 
+	analog begin 
+		I(p,n) <+ V(p,n)/r; // mfactor scaling of currents 
+				    // handled automatically 
+		reff = r / $mfactor; // the effective resistance = 1/42 
+	end 
+endmodule 
+

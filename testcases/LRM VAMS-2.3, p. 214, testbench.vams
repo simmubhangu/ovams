@@ -1,0 +1,15 @@
+
+module testbench; 
+	dut dut1; 
+endmodule 
+
+
+module dut; 
+	task mytask; 
+
+		$display( "%s\n%s\n%s\n", $simparam$str( "module"), 
+			 $simparam$str( "instance"), 
+			 $simparam$str( "path")); 
+	endtask 
+endmodule 
+

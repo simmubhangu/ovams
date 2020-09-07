@@ -1,0 +1,29 @@
+
+// 
+// N-bit DAC example. 
+// 
+module dac(out, in, clk); 
+	parameter integer width = 8 from [2:24]; 
+	parameter real fullscale = 1.0, vth = 2.5, td = 1n, tt = 1n; 
+	output out; 
+	input [0:width-1] in; 
+	input clk; 
+	electrical out; 
+	electrical [0:width-1] in; 
+	electrical clk;
+	real aout; 
+	genvar i; 
+
+	analog begin 
+		@(cross(V(clk) - vth, +1)) begin 
+			aout = 0; 
+			for (i = width - 1; i >= 0; i = i - 1) begin 
+				if (V(in[i]) > vth) begin 
+					aout = aout + fullscale/pow(2, width - i); 
+				end 
+			end 
+		end 
+		V(out) <+ transition(aout, td, tt); 
+	end 
+endmodule 
+

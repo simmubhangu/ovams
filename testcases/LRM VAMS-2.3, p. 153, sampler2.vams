@@ -1,0 +1,12 @@
+
+module sampler2 (in, clk, out); 
+	input in, clk; 
+	output out; 
+	wire in; 
+	reg out; 
+	electrical clk; 
+
+	always @(cross(V(clk) - 2.5, 1)) 
+		out = in; 
+endmodule 
+

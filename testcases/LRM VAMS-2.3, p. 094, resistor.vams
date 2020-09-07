@@ -1,0 +1,10 @@
+
+module resistor(p, n); 
+	inout p, n; 
+	electrical p, n; 
+	branch (p,n) res; 
+	parameter real R = 50; 
+	analog 
+		V(res) <+ R*I(res); 
+endmodule 
+

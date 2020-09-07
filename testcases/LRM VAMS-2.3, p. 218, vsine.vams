@@ -1,0 +1,13 @@
+`include "constants.vams"
+
+module vsine(out); 
+	output out; 
+	voltage out; 
+	parameter real freq=1.0, ampl=1.0, offset=0.0; 
+
+	analog begin 
+		V(out) <+ ampl*sin(2.0*`M_PI*freq*$abstime) + offset; 
+		$bound_step(0.05/freq); 
+	end 
+endmodule
+

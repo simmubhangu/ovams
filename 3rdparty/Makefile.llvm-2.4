@@ -1,0 +1,18 @@
+PREFIX := $(PWD)
+PATH := $(PWD)/bin:$(PATH)
+
+LLVM_DIR := llvm-2.4
+LLVM_TAR := $(LLVM_DIR).tar.gz
+LLVM_URL := http://llvm.org/releases/2.4/$(LLVM_TAR)
+
+$(PREFIX)/bin/llc: src/$(LLVM_DIR)
+	( cd $< && ./configure --enable-debug-runtime --enable-jit --prefix=$(PREFIX) )
+	( cd $< && make OPTIMIZE_OPTION=-O0 && make install )
+
+src/$(LLVM_TAR):
+	( mkdir -p src && cd src && wget -T 10 -t 0 -c $(LLVM_URL) )
+
+src/$(LLVM_DIR): src/$(LLVM_TAR)
+	( cd src && tar xfz $(LLVM_TAR) )
+	-( cd src && cat ../$(notdir $(basename $(basename $(LLVM_DIR))))*patch.diff | patch -p0 )
+

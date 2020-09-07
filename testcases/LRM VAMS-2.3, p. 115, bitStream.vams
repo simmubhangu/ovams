@@ -1,0 +1,14 @@
+
+module bitStream (out);
+	output out; 
+	electrical out; 
+	parameter period = 1.0; 
+	integer x; 
+
+	analog begin 
+		@(timer(0, period)) 
+			x = $random + 0.5; 
+		V(out) <+ transition( x, 0.0, period/100.0 ); 
+	end 
+endmodule
+

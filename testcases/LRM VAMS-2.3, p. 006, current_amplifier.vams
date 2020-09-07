@@ -1,0 +1,11 @@
+
+module current_amplifier (out, in); 
+	input in; 
+	output out; 
+	current out, // Discipline current defined elsewhere 
+		in;  // with access function I() 
+	parameter real GAIN_I = 10.0; 
+	analog 
+		I(out) <+ GAIN_I * I(in); 
+endmodule 
+

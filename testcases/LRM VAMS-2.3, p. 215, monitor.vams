@@ -1,0 +1,31 @@
+
+module monitor; 
+	parameter string inst = "default"; 
+	parameter string quant = "default"; 
+	parameter real threshold = 0.0; 
+	real probe; 
+
+	analog begin  
+		probe = $simprobe(inst,quant); 
+		if (probe > threshold) begin  
+			$strobe("ERROR: Time %e: %s#%s (%g) > threshold (%e)", 
+				$abstime, inst,quant, probe, threshold); 
+			$finish; 
+		end  
+	end 
+endmodule  
+
+
+module top(d,g,s); 
+	electrical d.g.s; 
+	inout d,g,s; 
+	electrical gnd; ground gnd; 
+
+	SPICE_pmos #(.w(4u),.l(0.1u),.ad(4p),.as(4p),.pd(10u),.ps(10u)) 
+		mp(d,g,s,s); 
+	SPICE_nmos #(.w(2u),.l(0.1u),.ad(2p),.as(2p),.pd(6u),.ps(6u)) 
+		mn(d,g,gnd,gnd); 
+	monitor #(.inst("mn"),.quant("id"),.threshold(4.0e-3)) 
+		amonitor(); 
+endmodule
+

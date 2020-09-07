@@ -1,0 +1,17 @@
+
+
+module nmosfet (d, g, s, b); 
+	inout electrical d, g, s, b; 
+	parameter integer nqsMod = 0 from [0:1]; 
+ 
+	// "generate" and "endgenerate" keywords are not required. 
+	if (nqsMod) begin : nqs 
+		electrical GP; 
+		electrical BP; 
+		electrical BI; 
+		electrical BS; 
+		electrical BD; 
+		/* ... */
+	end 
+endmodule  
+

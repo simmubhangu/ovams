@@ -1,0 +1,22 @@
+
+module a2d(dnet, anet); 
+	input dnet; 
+	output anet; 
+	wire dnet; 
+	ddiscrete dnet; 
+	electrical anet; 
+	real avar; 
+
+	analog begin  
+		if (dnet === 1'b1) 
+			avar = 5; 
+		else if (dnet === 1'bx) 
+			avar = avar; // hold value 
+		else if (dnet === 1'b0) 
+			avar = 0; 
+		else if (dnet === 1'bz) 
+			avar = 2.5; // high impedance - float value 
+		V(anet) <+ avar; 
+	end 
+endmodule 
+

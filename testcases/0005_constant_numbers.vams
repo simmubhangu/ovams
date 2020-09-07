@@ -1,0 +1,12 @@
+
+module x;
+	parameter binary_number_nobase = 'h0000_1111_1010_0101;
+	parameter decimal_number_nobase = 'd123;
+	parameter hex_number_nobase = 'h1fe2;
+	parameter octal_number_nobase = 'o7123;
+	parameter binary_number = 16'h0000_1111_1010_0101;
+	parameter decimal_number = 16'd123;
+	parameter hex_number = 16'h1fe2;
+	parameter octal_number = 16'o7123;
+endmodule
+

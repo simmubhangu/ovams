@@ -1,0 +1,11 @@
+
+module voltage_amplifier (out, in); 
+	input in; 
+	output out; 
+	voltage out, // Discipline voltage defined elsewhere 
+		in;  // with access function V() 
+	parameter real GAIN_V = 10.0; 
+	analog 
+		V(out) <+ GAIN_V * V(in); 
+endmodule 
+

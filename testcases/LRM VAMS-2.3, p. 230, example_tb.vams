@@ -1,0 +1,9 @@
+
+module example_tb(a, b); 
+	electrical a, b; 
+	inout a, b; 
+	analog begin 
+		I(a, b) <+ $table_model(0.0, V(a,b),"sample.dat"); 
+	end 
+endmodule 
+

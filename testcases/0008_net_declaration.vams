@@ -1,0 +1,5 @@
+
+module M1 ;
+	wire w2;
+endmodule
+

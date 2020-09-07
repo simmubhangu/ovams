@@ -1,0 +1,9 @@
+
+module transamp(out, in); 
+	inout out, in; 
+	electrical out, in; 
+	parameter real gm = 1; 
+	analog 
+		I(out) <+ gm*V(in); 
+endmodule 
+

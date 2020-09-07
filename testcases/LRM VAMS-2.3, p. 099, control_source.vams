@@ -1,0 +1,12 @@
+
+module control_source (p, n, ps, ns); 
+	inout p, n, ps, ns; 
+	electrical p, n, ps, ns; 
+	parameter A=1; 
+	branch (ps,ns) in; 
+	branch (p,n) out; 
+	analog begin 
+		// add behavioral statement here 
+	end 
+endmodule 
+

@@ -1,0 +1,18 @@
+
+module ecpOsc (out, gnd); 
+	electrical out, gnd; 
+
+	vdc #(.dc(5)) Vcc (vcc, gnd); 
+	idc #(.dc(1m)) Iee (e, gnd); 
+	vertNPN Q1 (vcc, b1, e, vcc); 
+	vertNPN Q2 (out, b2, e, out); 
+	inductor #(.l(1u)) L1 (vcc, out); 
+	capacitor #(.c(1p), .ic(1)) C1 (vcc, out); 
+	capacitor #(.c(272.7p)) C2 (out, b1); 
+	capacitor #(.c(3n)) C3 (b1, gnd); 
+	resistor #(.r(10k)) R1 (b1, gnd); 
+	capacitor #(.c(3n)) C4 (b2, gnd); 
+	resistor #(.r(10k)) R2 (b2, gnd); 
+endmodule 
+
+

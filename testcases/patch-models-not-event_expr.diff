@@ -1,0 +1,23 @@
+--- models/not.va-orig	2007-03-07 17:18:00.000000000 +0100
++++ models/not.va	2008-11-23 23:49:01.000000000 +0100
+@@ -8,6 +8,7 @@ module V_not(in, out);
+     input [0:size-1] in;
+     output [0:size-1] out;
+     electrical [0:size-1] in, out;
++    real Vout;
+ 
+     parameter real vout_high = 5;
+     parameter real vout_low = 0 from (-inf:vout_high);
+@@ -19,9 +20,10 @@ module V_not(in, out);
+     analog
+         generate i (0, size-1) begin
+             @(cross(V(in[i]) - vth, +1))
+-                V(out) <+ transition(vout_high, tdelay, trise, tfall);
++                Vout = transition(vout_high, tdelay, trise, tfall);
+             @(cross(V(in[i]) - vth, -1))
+-                V(out) <+ transition(vout_low, tdelay, trise, tfall);
++                Vout = transition(vout_low, tdelay, trise, tfall);
++            V(out) <+ Vout;
+         end
+ 
+ endmodule

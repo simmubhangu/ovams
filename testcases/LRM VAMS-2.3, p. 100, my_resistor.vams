@@ -1,0 +1,11 @@
+
+module my_resistor(p,n); 
+	inout p,n; 
+	electrical p,n; 
+	parameter real R=1; 
+	branch (p,n) res; 
+	analog begin 
+		V(res) <+ R * I(res); 
+	end 
+endmodule
+

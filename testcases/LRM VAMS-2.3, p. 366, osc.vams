@@ -1,0 +1,6 @@
+
+module osc (out, gnd); 
+	electrical out, gnd; 
+	ecpOsc Osc1 (out, gnd); 
+endmodule 
+

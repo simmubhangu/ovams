@@ -1,0 +1,11 @@
+
+module my_conductor(p,n); 
+	inout p, n; 
+	electrical p,n; 
+	parameter real G=1; 
+	branch (p,n) cond; 
+	analog begin 
+		I(cond) <+ G * V(cond); 
+	end 
+endmodule
+

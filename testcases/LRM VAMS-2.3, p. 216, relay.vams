@@ -1,0 +1,16 @@
+
+module relay (c1, c2, pin, nin) ; 
+	inout c1, c2 ; 
+	input pin, nin ; 
+	electrical c1, c2, pin, nin ; 
+	parameter real r=1 ; 
+
+	analog begin 
+		@(cross(V(pin,nin))) $discontinuity ; 
+		if (V(pin,nin) >= 0)
+			I(c1,c2) <+ V(c1,c2)/r; 
+		else 
+			I(c1,c2) <+ 0 ; 
+	end 
+endmodule
+

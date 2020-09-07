@@ -1,0 +1,8 @@
+
+`begin_keywords "1364-2005" // use IEEE Std 1364-2005 Verilog keywords 
+module m2 (sin /* ... */); 
+	input sin; // OK since sin is not a keyword in 1364-2005 
+	/* ... */
+endmodule 
+`end_keywords 
+

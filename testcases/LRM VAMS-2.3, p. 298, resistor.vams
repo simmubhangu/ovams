@@ -1,0 +1,11 @@
+
+module resistor(p, n); 
+	electrical p, n; 
+	parameter real r = 1k; 
+	real curr; 
+	analog begin 
+		$resistor(curr, V(p, n), r); 
+		I(p, n) <+ curr; 
+	end 
+endmodule
+

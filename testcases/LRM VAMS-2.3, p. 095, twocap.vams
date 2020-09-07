@@ -1,0 +1,12 @@
+
+module twocap(a, b, n1, n2); 
+	inout a, b, n1, n2;
+	electrical a, b, n1, n2; 
+	branch (n1, n2) cap; 
+	parameter real c= 1p; 
+	analog begin 
+		I(a,b) <+ c*ddt(V(a,b), a.potential.abstol); 
+		I(cap) <+ c*ddt(V(cap), n1.potential.abstol); 
+	end 
+endmodule
+

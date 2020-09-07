@@ -1,0 +1,12 @@
+
+module top(); 
+	real stim; 
+	electrical load; 
+	wreal wrstim; 
+	assign wrstim = stim; 
+	foo f1(wrstim, load); 
+	always begin 
+		#1 stim = stim + 0.1; 
+	end 
+endmodule
+

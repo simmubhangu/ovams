@@ -1,0 +1,13 @@
+
+module sampler (in, clk, out); 
+	inout in;
+	input clk; 
+	output out; 
+	electrical in; 
+	wire clk; 
+	reg out; 
+
+	always @(posedge clk) 
+		out = V(in); 
+endmodule
+

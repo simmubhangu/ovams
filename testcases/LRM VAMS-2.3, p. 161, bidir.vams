@@ -1,0 +1,9 @@
+
+connectmodule bidir (out, in); 
+	inout out; 
+	inout in; 
+	ddiscrete out; 
+	electrical in; 
+	// insert connect module behavioral here 
+endmodule 
+

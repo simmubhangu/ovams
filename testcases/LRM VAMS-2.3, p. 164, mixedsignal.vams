@@ -1,0 +1,63 @@
+
+module dig_inv(in, out); 
+	input in; 
+	output out; 
+	reg out; 
+	ddiscrete in, out; 
+	always begin 
+		out = #10 ~in; 
+	end 
+endmodule 
+
+
+module analog_inv(in, out); 
+	input in; 
+	output out; 
+	electrical in, out; 
+	parameter real vth = 2.5; 
+	real outval; 
+	analog begin 
+		if (V(in) > vth) 
+			outval = 0; 
+		else 
+			outval = 5 ; 
+		V(out) <+ transition(outval); 
+	end 
+endmodule
+
+ 
+module ring; 
+	dig_inv d1 (n1, n2);
+	dig_inv d2 (n2, n3); 
+	analog_inv a3 (n3, n1); 
+endmodule
+
+
+connectmodule elect_to_logic(el,cm); 
+	input el; 
+	output cm; 
+	reg cm; 
+	electrical el; 
+	ddiscrete cm; 
+	always @(cross(V(el) - 2.5, 1)) 
+		cm = 1; 
+	always @(cross(V(el) - 2.5, -1)) 
+		cm = 0; 
+endmodule 
+
+
+connectmodule logic_to_elect(cm,el); 
+	input cm; 
+	output el; 
+	ddiscrete cm; 
+	electrical el; 
+	analog 
+		V(el) <+ transition((cm == 1) ? 5.0 : 0.0); 
+endmodule 
+
+
+connectrules mixedsignal; 
+	connect elect_to_logic; 
+	connect logic_to_elect; 
+endconnectrules
+

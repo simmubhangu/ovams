@@ -1,0 +1,23 @@
+
+`include "constants.vams"
+
+module qam16(out, in); 
+	parameter freq=1.0, ampl=1.0, dly=0, ttime=1.0/freq; 
+	input [0:4] in; 
+	output out; 
+	electrical [0:4] in; 
+	electrical out; 
+	real x, y, thresh; 
+	integer row, col; 
+
+	analog begin 
+		row = 2*(V(in[3]) > thresh) + (V(in[2]) > thresh); 
+		col = 2*(V(in[1]) > thresh) + (V(in[0]) > thresh); 
+		x = transition(row - 1.5, dly, ttime); 
+		y = transition(col - 1.5, dly, ttime); 
+		V(out) <+ ampl*x*cos(2*`M_PI*freq*$abstime) 
+			+ ampl*y*sin(2*`M_PI*freq*$abstime); 
+		$bound_step(0.1/freq);
+	end 
+endmodule 
+

@@ -1,0 +1,17 @@
+
+module relay (p, n, cp, cn); 
+	inout p, n, cp, cn; 
+	electrical p, n, cp, cn; 
+	branch (p,n) out; 
+	branch (cp,cn) ctrl; 
+	parameter real thresh = 0; 
+	analog begin 
+		// stop to resolve threshold crossings 
+		@(cross(V(ctrl) - thresh, 0)); 
+			if (V(ctrl) > thresh) 
+				V(out) <+ 0; 
+			else 
+				I(out) <+ 0; // optional due to value retention 
+	end 
+endmodule
+

@@ -1,0 +1,11 @@
+--- models/lowpass1.va-orig	2007-03-06 17:33:06.000000000 +0100
++++ models/lowpass1.va	2008-11-23 23:41:31.000000000 +0100
+@@ -10,7 +10,7 @@ module lowpass1(in, out);
+     parameter real freq_p1 = 1M from (0:inf);
+ 
+     analog
+-        V(out) <+ laplace_nd(V(in), {1}, {1, 1/(`M_TWO_PI*freq_p1)});
++        V(out) <+ laplace_nd(V(in), '{1}, '{1, 1/(`M_TWO_PI*freq_p1)});
+ 
+ endmodule
+ 

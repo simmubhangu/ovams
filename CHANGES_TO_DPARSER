@@ -1,0 +1,22 @@
+
+Here is a list of issues that came to my mind when using dparser:
+
+
+Documentation (I think these issues have been resolved. Is this correct?):
+
+ - $n is undocumented (access to production node, see ./3rdparty/src/d/write_tables.c, line 1141)
+ - D_ParseNode_Global is mis-typed as D_ParseNodeGlobals
+
+
+Strange behaviour: 
+
+ - default rule (_:) invalidates other rules when written as first rule, works fine when written at end of file? (this is ok, since it has the highest priority when written on top of file)
+ - parsers with whitespace rules segfault? Is there an example or testcase for them?
+ - parse buffer seems to need one terminating '\0'-byte after the end? Off-by-one in default scanner or buf/len-argument not taken into account? (I think this has been fixed in the meantime, is this correct? Better check twice.)
+ - where to free user-supplied pathname (p->loc.pathname)? Freeing it in user programs sometimes leads to double-free, not freeing sometimes leaks. Additionally, when replacing the pathname in actions (`line compiler directives), where is the right place to free the re-allocated pointer? (I think I resolved this? Better check twice.)
+
+
+Wishlist:
+
+ - Since huge grammars lead to long generation and compilation times, it would be nice to split actions from grammar (put them into a seperate file), in order to speed up development cycle?
+

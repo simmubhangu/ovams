@@ -1,0 +1,24 @@
+
+module triangle(out); 
+	output out; 
+	voltage out; 
+	parameter real period = 10.0, amplitude = 1.0; 
+	integer slope; 
+	real offset; 
+
+	analog begin 
+		@(timer(0, period)) begin 
+			slope = +1; 
+			offset = $abstime ; 
+			$discontinuity; 
+		end 
+		@(timer(period/2, period)) begin 
+			slope = -1 ; 
+			offset = $abstime; 
+			$discontinuity ; 
+		end 
+		V(out) <+ amplitude*slope* 
+			(4*($abstime - offset)/period - 1); 
+	end 
+endmodule 
+

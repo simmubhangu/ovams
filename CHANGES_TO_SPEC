@@ -1,0 +1,304 @@
+Some of these issues have been resolved, others not. Check in the Verilog/AMS mantis bug database.
+
+
+== Typo: vpiScaledTme should read vpiScaledTime ==
+VAMS 2.3 LRM, section 12.32.3, p. 316:
+Typo: vpiScaledTme should read vpiScaledTime.
+
+
+== vpiDiscipline and vpiNature enum are nowhere mentioned ==
+In VAMS 2.3 LRM, section 11.6.2. (object diagram for discipline and nature VPI objects),
+no matching VPI enums for type and name are defined.
+
+
+== `default_decay_time, affects 1364 and VAMS ==
+The 1364 LRM specifies:
+
+    Syntax:
+    `default_decay_time integer_constant | real_constant | infinite
+
+Thus, real constants are explicitly allowed. However, the VPI definition reports
+the vpiDefDecayTime property as 'int'. This leads to two problems: resolution of 
+the decay time due to real->int conversion, and even worse, no clean way to pass 
+'infinite' to the application (one could use MAX_INT, but this is not as clean 
+as the floating-point +inf value, specified for IEEE real values).
+Resolution: Store and report vpiDefDecayTime as real value.
+
+
+
+
+== LRM 2.3, p. 126, p. 326 ==
+'string_parameter_declaration' and
+'local_string_parameter_declaration' are nowhere defined in the spec,
+however, 'parameter_declaration' and 'local_parameter_declaration' can
+be of type 'string', so they are not needed and can get removed?
+Also, there are two missing semicolons:
+
+    paramset_item_declaration ::=
+         { attribute_instance } parameter_declaration ';'          // <-- missing semicolon
+       | { attribute_instance } local_parameter_declaration ';'    // <-- missing semicolon
+       | { attribute_instance } string_parameter_declaration       // line not required?
+       | { attribute_instance } local_string_parameter_declaration // line not required?
+       | aliasparam_declaration
+       | { attribute_instance } integer_declaration
+       | { attribute_instance } real_declaration
+
+
+
+== LRM 2.3, p. 84, p. 89, p. 330, p. 331, missing semicolons in grammar ==
+Some declarations miss the trailing semicolon, the correct productions
+should probably rather read like this? Nevertheless the distribution
+of semicolons is somewhat hard to follow, so it may still not 100%
+correct? However, this code allows me to parse the LRM examples
+without error:
+
+    analog_block_item_declaration :
+         { attribute_instance } parameter_declaration ';'
+       | { attribute_instance } integer_declaration
+       | { attribute_instance } real_declaration ;
+
+    analog_function_item_declaration :
+         analog_block_item_declaration
+       | input_declaration ';'
+       | output_declaration ';'
+       | inout_declaration ';' ;
+
+
+
+== LRM 2.3, p. 230: missing semicolons in example code ==
+the example on page 230 (PDF of LRM 2.3) misses 12 semicolons in the
+first column of the array assignments.
+
+
+
+== LRM 2.3, p. 127-8 ==
+the example code on p.127-8 (copy below) has two problems:
+semicoCMOS.tox is as hierarchical identifier not part of the
+'constant_expression'-'constant_primary' production in
+'paramset_statement', thus semicoCMOS.tox, semicoCMOS.dtox_g and
+semicoCMOS.dtox_mm cause a parse error. Should 'constant_primary'
+contain hierarchical identifiers to allow generic
+cross-module-references, or rather 'paramset_statement' use some
+special production?
+
+Beside this the last 6 lines should be wrapped in a module, maybe 'top'?
+
+    module semicoCMOS ();
+       localparam real tox = 3e-8;
+       localparam real dtox_g = $rdist_normal(1,0,1n,"global");
+       localparam real dtox_mm = $rdist_normal(2,0,5n,"instance");
+    endmodule
+
+    paramset nch nmos3; // mismatch paramset
+       parameter real l=1u from [0.25u:inf);
+       parameter real w=1u from [0.2u:inf);
+       parameter integer mm=0 from (0:1];
+       .l=l; .w=w; .ad=w*0.5u; .as=w*0.5u;
+       .kp=5e-5; .u0=650; .nsub=1.3e17;
+       .vmax=0; .tpg=1; .nfs=0.8e12;
+       .tox = semicoCMOS.tox + semicoCMOS.dtox_g + semicoCMOS.dtox_mm;
+    endparamset
+
+    nch #(.l(1u), .w(5u), .mm(1)) m1(.d(d1), .g(g), .s(0), .b(0));
+    nch #(.l(1u), .w(5u), .mm(1)) m2(.d(d2), .g(g), .s(0), .b(0));
+    resistor #(.r(1k)) R1 (vdd, d1);
+    resistor #(.r(1k)) R2 (vdd, d2);
+    vsine #(.dc(2.5)) Vdd (vdd, 0);
+    vsine #(.dc(0), .ampl(1.0), .offset(1.5), .freq(1k)) Vg (g, gnd);
+
+
+
+== LRM 2.3, p. 181 ==
+typo in example code:
+    connectmodule a2d(i,o);
+       parameter vdd = 1.0;
+       ddiscrete o;
+       input i;
+       output o;
+       reg o;
+       electrical i;
+       always begin @(cross(V(i) - vdd/2,+1) o = 1; end // <- closing brace missing
+       always begin @(cross(V(i) - vdd/2,-1) o = 0; end // <- closing brace missing
+   endmodule
+
+
+
+== LRM 2.3, p. 216: missing comma in example code ==
+typo in example code:
+    SPICE_pmos #(.w(4u),.l(0.1u).ad(4p),.as(4p),.pd(10u),.ps(10u))
+                               ^^^
+                    missing comma before '.ad()'
+
+
+
+== VAMS LRM 2.3, p. 223: missing closing brace ==
+in example code:
+
+    module twoclk(vout_q1, vout_q2);
+       output vout_q1, vout_q2;
+       electrical vout_q1, vout_q1b;
+       myclk clk1(.vout_q(vout_q1);   // <<---- missing 2nd closing brace
+       myclk clk2(.vout_q(vout_q2));
+    endmodule
+
+
+
+== VAMS LRM 2.3, typo on p. 123 ==
+in example code:
+    module n (lo_out, rf_in):
+should probably read:
+    module n (lo_out, rf_in);  /* last symbol on line should be a semi-colon */
+
+
+
+== VAMS LRM 2.3, p. 113: keywords screwed ==
+    module sh (in, out, smpl);
+       real parameter thresh = 0;
+       integer parameter dir = +1 from [-1:0] exclude 0;
+       /* ... */
+
+should rather read 'parameter real' and 'parameter integer',
+shouldn't it? The same applies to the 2nd example on the same page.
+Maybe also the be pretty-printing is screwed (keywords should be
+rendered bold?)?
+
+
+
+== VAMS LRM 2.3, Floating-Point grammar issues ==
+grammar spec for production 'real_number' does not
+supports floating-point numbers without trailing 'unsigned_number',
+but this number format is used in at least one example code snippet in
+the spec:
+
+    /* LRM 2.3, p. 37 */
+    parameter real j = .004, D = 0.1;
+    parameter real Rm = 5.0, Lm = .02;
+
+
+    /* LRM 2.3, p. 11, and other places */ 
+    real_number ::=
+         unsigned_number . unsigned_number
+       | unsigned_number [ . unsigned_number ] exp [ sign ] unsigned_number
+       | unsigned_number [ . unsigned_number ] scale_factor
+
+However, this is easy to resolve by marking unsigned_number as optional:
+
+    real_number ::=
+         [ unsigned_number ] . unsigned_number
+       | unsigned_number [ . unsigned_number ] exp [ sign ] unsigned_number
+       | unsigned_number [ . unsigned_number ] scale_factor
+
+Open Question:
+Is it correct to do this only in the first line of the production? Or
+should one rather duplicate all lines and make there the first instead
+of the second 'unsigned_number' optional? Should all formats become
+supported, or only the simple one in the first line?
+
+
+
+== VAMS LRM 3.2, section 5.2, p. 88 and A.6.2, p. 335: typo ==
+'analog contruct' should probably read 'analog_construct'
+
+
+
+== VAMS LRM 2.3, p. 350 (and other places): string rule ==
+The default rule can't handle escaped quotes (\"), and does not supports
+concatenated strings in C-style ("string 1" "string 2" \n "string 3" etc.),
+which are used in some IEEE P1364-2005 compiler directive examples:
+ 
+    string : /* Any_ASCII_Characters_except_new_line */
+
+Replace this by a regular expression, which accepts strings containing 
+quoted quotes (\"), and optionally concatenates multiple simple strings:
+
+    /* allow any char inside string except non-escaped quotation char,
+     * allow any char without exception after escape-backslash
+     */
+    simple_string : \" { [^\"\\] | \\[^] } \"
+
+    string : simple_string { simple_string }
+
+
+
+== VAMS LRM 2.3, section A.8.2 (and other places): *_function_call  ==
+The function call rules have inconsistent semantics. Most do not allow empty
+argument lists (like func(); -- the rules do not make the first argument 
+optional). Is this intended?
+
+Rewriting the rules to fix this issue would yield something like:
+
+    function_call ::=
+        hierarchical_function_identifier [ attribute_instance ]
+            '(' [ expression { ',' expression } ] ')'
+
+(This change has applied only to the function_call rule, in order to resolve
+the issue in the Icarus Verilog testsuite, but there are several places with 
+the same problem: in principle all function call rules, although some may
+require special exceptions).
+
+Suggestion: collecting args into common expression_list rules would simplify 
+debugging the grammar and avoid bugs introduced by copy'n'paste.
+(See e.g. the SystemVerilog spec grammar for an example of this approach).
+
+Question: Should function and module parameter lists allow empty fields?
+(e.g. module a (a, b, c, , d, );  -- Some Compilers explicitly allow this)
+Is this a feature considered as 'useful', to be specified by the grammar?
+If so, should all comma-separated lists allow this syntax? If so, the 
+production should rather read:
+
+    function_call ::=
+        hierarchical_function_identifier [ attribute_instance ]
+            '(' [ expression ] { ',' [ expression] } ')'
+?
+
+
+
+== VAMS LRM 2.3, section 12.32.2, p. 314, typo ==
+vpi_handl_multi() should read vpi_handle_multi()?
+
+
+
+== VAMS LRM 2.3, section 12.10, definition of vpi_get_analog_value ==
+second argument should be p_vpi_analog_value, not p_vpi_value.
+
+
+
+== VAMS LRM 2.3, section 11.5.2, Example code ==
+vpi_get_size() is nowhere defined, maybe this should read vpi_get()?
+Also, in the line right above this one, 'vpivector' should read 'vpiVector'?
+Then,
+    char name[nameSize]; vpi_get_str(vpiName, obj_h);
+should probably read:
+    char *name = vpi_get_str(vpiName, obj_h);
+or, to be type-safe without casts:
+    PLI_BYTE8 *name = vpi_get_str(vpiName, obj_h);
+in order to store the returned string pointer somewhere?
+
+
+
+== VAMS LRM 2.3, section 12.32.3, example code ==
+in function sampler_calltf(), vpi_set_value() should read vpi_put_value()?
+
+
+
+== VAMS LRM 2.3, section 12.36, vpi_sim_control() ==
+Is vpi_sim_control() intentionally named different from vpi_control() in
+IEEE1364-2005, or can we 
+#define vpi_sim_control vpi_control
+?
+
+
+== VAMS 2.3 A.6.6 Conditional statements and 1364-2005, A.6.6 Conditional statements ==
+The 'conditional_statement' rule is redundant with it's subrule. The rules for 'analog_conditional_statement' and 'analog_function_conditional_statement' are affected too, although slightly differently (note that 'statement_or_null' contains the 'conditional_statement' rule). The minimal definitions would read:
+
+analog_conditional_statement :
+          'if' '(' analog_expression ')' analog_statement_or_null
+          ( 'else' analog_statement_or_null )? ;
+
+analog_function_conditional_statement :
+          'if' '(' analog_expression ')' analog_function_statement_or_null
+          ( 'else' analog_function_statement_or_null )? ;
+
+conditional_statement :
+          'if' '(' expression ')' statement_or_null ( 'else' statement_or_null )? ;
+

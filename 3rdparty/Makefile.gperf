@@ -1,0 +1,18 @@
+PREFIX := $(PWD)
+PATH := $(PWD)/bin:$(PATH)
+
+GPERF_DIR := gperf-3.0.3
+GPERF_TAR := $(GPERF_DIR).tar.gz
+GPERF_URL := ftp://ftp.gnu.org/gnu/gperf/$(GPERF_TAR)
+
+
+$(PREFIX)/bin/gperf: src/$(GPERF_DIR)
+	( cd $< && ./configure --prefix=$(PREFIX) && make && make install )
+
+src/$(GPERF_DIR): src/$(GPERF_TAR)
+	( cd src && tar xfz $(GPERF_TAR) )
+	-( cd src && cat ../$(notdir $(basename $(basename $(GPERF_DIR))))*patch.diff | patch -p0 )
+
+src/$(GPERF_TAR):
+	( mkdir -p src && cd src && wget -T 10 -t 0 -c $(GPERF_URL) )
+

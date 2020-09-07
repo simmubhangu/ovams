@@ -1,0 +1,12 @@
+
+module foo(in, out); 
+	input in; 
+	output out; 
+	wreal in; 
+	electrical out; 
+
+	analog begin 
+		V(out) <+ in; 
+	end 
+endmodule
+

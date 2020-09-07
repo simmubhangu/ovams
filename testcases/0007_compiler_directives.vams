@@ -1,0 +1,16 @@
+
+module m1 ; endmodule
+
+`celldefine
+`timescale 10us/1fs
+module m2 ; endmodule
+`endcelldefine
+
+`timescale 1us/1us
+`default_decay_time 31.4
+module m2 ; endmodule
+
+`resetall
+module m3 ; endmodule
+
+

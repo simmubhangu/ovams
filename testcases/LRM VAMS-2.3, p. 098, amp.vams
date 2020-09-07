@@ -1,0 +1,17 @@
+
+module amp(out, in); 
+	inout out, in; 
+	electrical out, in; 
+	parameter real Gain = 1, Rin = 1, Cin = 1, Rout = 1, Lout = 1; 
+	analog begin 
+		// gain of amplifier 
+		V(out) <+ Gain*V(in); 
+		// model input admittance 
+		I(in) <+ V(in)/Rin; 
+		I(in) <+ Cin*ddt(V(in)); 
+		// model output impedance 
+		V(out) <+ Rout*I(out); 
+		V(out) <+ Lout*ddt(I(out)); 
+	end 
+endmodule 
+

@@ -1,0 +1,11 @@
+--- models/opamp.va-orig	2008-12-12 13:19:00.000000000 +0100
++++ models/opamp.va	2008-12-12 13:19:15.000000000 +0100
+@@ -48,7 +48,7 @@ module opamp(vinp, vinm, vdd, vss, voutp
+ 
+         // dominant pole
+         vout0 = laplace_nd(vin*`dB2dec(gain),
+-                           {1}, {1, 1/(`M_TWO_PI*three_dB_freq)})
++                           '{1}, '{1, 1/(`M_TWO_PI*three_dB_freq)})
+                 + vout_offset;
+ 
+         // output current

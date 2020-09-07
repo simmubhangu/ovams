@@ -1,0 +1,11 @@
+
+module m (); 
+	electrical clk; 
+	electrical out_a,in_a; 
+	electrical out_b,in_b; 
+	// create an instance and set parameters 
+	mosp #(2e-6,1e-6) weakp (out_a, in_a, clk); 
+	// create an instance leaving default values 
+	mosp plainp (out_b, in_b, clk); 
+endmodule 
+

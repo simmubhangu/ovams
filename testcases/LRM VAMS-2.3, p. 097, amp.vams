@@ -1,0 +1,10 @@
+
+module amp(out, in); 
+	input in; 
+	output out;
+	electrical out, in; 
+	parameter real Gain = 1; 
+	analog 
+		V(out) <+ Gain*V(in); 
+endmodule 
+

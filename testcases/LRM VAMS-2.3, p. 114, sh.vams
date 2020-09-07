@@ -1,0 +1,14 @@
+
+module sh (in, out, smpl); 
+	output out; 
+	input in, smpl; 
+	electrical in, out, smpl; 
+	real state;
+
+	analog begin 
+		@(above(V(smpl) - 2.5)) 
+			state = V(in); 
+		V(out) <+ transition(state, 0, 10n); 
+	end 
+endmodule
+

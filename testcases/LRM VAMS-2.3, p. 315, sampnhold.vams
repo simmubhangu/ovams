@@ -1,0 +1,9 @@
+
+module sampnhold(out, in); 
+	electrical out, in; 
+	parameter real period = 1e-3; 
+	analog begin 
+		  V(out) <+ $sampler(V(in), period); 
+	end 
+endmodule
+

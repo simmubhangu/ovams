@@ -1,0 +1,28 @@
+
+module initial_always ;
+	initial
+		$fini;
+
+	initial begin
+	end
+
+	always @(*)
+		$fini;
+
+	always @(*) begin
+	end
+
+	always @(posedge x) begin
+	end
+
+	always @(negedge y) begin
+	end
+
+	always @(posedge x or negedge y) begin
+	end
+
+	always @(x or y) begin
+	end
+
+endmodule
+

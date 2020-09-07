@@ -1,0 +1,13 @@
+
+module mm ;
+	parameter p1 = 5;
+	parameter integer pi = 2;
+	parameter real r = 1.2345;
+	parameter realtime prt = 2.345;
+	parameter time pt = 2;
+	parameter string ps = "sss";
+	parameter signed p_signed = -2;
+	parameter [ 3 : 0 ] p_ranged = -2;
+	parameter p_valueranged = -2 from ( -inf : 3.3) ;
+endmodule
+

@@ -1,0 +1,5 @@
+
+module m1; // module definition with no `begin_keywords directive 
+	/* ... */
+endmodule 
+

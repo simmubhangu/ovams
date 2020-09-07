@@ -1,0 +1,19 @@
+
+module genvarexp(out, dt); 
+	parameter integer width = 1; 
+	output out; 
+	input [1:width] dt; 
+	electrical out; 
+	electrical [1:width] dt; 
+	genvar k; 
+	real tmp; 
+
+	analog begin 
+		tmp = 0.0; 
+		for (k = 1; k <= width; k = k + 1) begin 
+			tmp = tmp + V(dt[k]); 
+			V(out) <+ ddt(V(dt[k])); 
+		end 
+	end 
+endmodule 
+

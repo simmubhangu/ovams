@@ -1,0 +1,9 @@
+
+module resistor (a, b); 
+	inout a, b; 
+	electrical a, b; // access functions are V() and I() 
+	parameter real R = 1.0; 
+	analog 
+		V(a,b) <+ R * I(a,b); 
+endmodule 
+

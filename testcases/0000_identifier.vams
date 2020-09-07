@@ -1,0 +1,15 @@
+
+module a ; endmodule
+
+module aa ; endmodule
+
+module A ; endmodule
+
+module _1 ; endmodule
+
+module a1 ; endmodule
+
+module a$ ; endmodule
+
+module ABC12_a12 ; endmodule
+

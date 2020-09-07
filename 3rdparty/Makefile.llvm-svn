@@ -1,0 +1,14 @@
+PREFIX := $(PWD)
+PATH := $(PWD)/bin:$(PATH)
+
+LLVM_DIR := llvm 
+LLVM_SVN := http://llvm.org/svn/llvm-project/llvm/trunk
+
+$(PREFIX)/bin/llc: src/$(LLVM_DIR)
+	( cd $< && ./configure --enable-debug-runtime --enable-jit --prefix=$(PREFIX) )
+	( cd $< && make OPTIMIZE_OPTION=-O0 && make install )
+
+src/$(LLVM_DIR):
+	( mkdir -p src && cd src && svn co $(LLVM_SVN) llvm )
+	-( cd src && cat ../llvm-svn-*patch.diff | patch -p0 )
+

@@ -1,0 +1,8 @@
+
+`begin_keywords "VAMS-2.3" // use Verilog-AMS LRM2.3 keywords 
+module m2 (sin /* , ... */ ); // ERROR: "sin" is a keyword in Verilog-AMS 
+	input sin; 
+	/* ... */
+endmodule 
+`end_keywords 
+

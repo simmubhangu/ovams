@@ -1,0 +1,12 @@
+--- models/pwl_comparator.va-orig	2008-11-23 23:50:01.000000000 +0100
++++ models/pwl_comparator.va	2008-11-23 23:50:18.000000000 +0100
+@@ -24,8 +24,7 @@ module pwl_comparator(in, ref, out);
+ 
+         @(initial_step)
+             if (output_high <= output_low) begin
+-                $strobe("Range specification error.\n\
+-                         output_high = (%E) less than output_low = (%E).\n",
++                $strobe("Range specification error.\noutput_high = (%E) less than output_low = (%E).\n",
+                          output_high, output_low );
+                 $finish;
+             end

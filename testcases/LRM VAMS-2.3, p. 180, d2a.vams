@@ -1,0 +1,11 @@
+
+module d2a(val,vo); // 16 bit D->A 
+	parameter Vgain = 1.0/65536; 
+	input val; 
+	wire [15:0] val; 
+	electrical vo; 
+	analog begin 
+		V(vo) <+ Vgain * val; 
+	end 
+endmodule 
+

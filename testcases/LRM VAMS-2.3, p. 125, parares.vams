@@ -1,0 +1,13 @@
+
+module parares(a, b); 
+	inout a, b; 
+	electrical a, b; 
+	parameter real r = 1.0 from (0:inf); 
+	analog begin 
+		if (r / $mfactor < 1.0e-3) 
+			V(a,b) <+ 0.0; 
+		else 
+			I(a,b) <+ V(a,b) / r; 
+	end 
+endmodule 
+

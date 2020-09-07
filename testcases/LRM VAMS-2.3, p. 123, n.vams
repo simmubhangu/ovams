@@ -1,0 +1,7 @@
+
+module n (lo_out, rf_in);
+	electrical lo_out, rf_in; 
+	//create an instance and set parameters 
+	vco #(.centerFreq(5000), .convGain(1000)) vco1(lo_out, rf_in); 
+endmodule 
+

@@ -1,0 +1,7 @@
+
+module M1 ;
+	real r2;
+	real x2 = 3.1415;
+	real a1;
+endmodule
+

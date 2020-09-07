@@ -1,0 +1,11 @@
+
+
+`line 444 "file.f" 0
+
+`include "constants.vams"
+// at this point the parser should report file "file.f", line 445
+
+module m ;
+
+endmodule
+

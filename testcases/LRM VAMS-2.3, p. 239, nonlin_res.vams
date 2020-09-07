@@ -1,0 +1,21 @@
+
+module nonlin_res(a, b); 
+	input a, b; 
+	electrical a, b; 
+	parameter real rnom = 1; 
+	parameter real vc1 = 0; 
+	real reff, iab; 
+
+	analog begin 
+		iab = V(a,b) / (rnom * (1.0 + vc1 * V(a,b))); 
+		I(a,b) <+ iab; 
+`ifdef __VAMS_COMPACT_MODELING__ 
+		reff = ddx(iab, V(a)); 
+		I(a,b) <+ white_noise(4.0*‘P_K*$temperature*reff, "thermal"); 
+`else 
+		if (analysis("noise"))
+			$strobe("Noise not computed."); 
+`endif 
+	end 
+endmodule
+

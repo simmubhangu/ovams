@@ -1,0 +1,9 @@
+
+module opamp(out, pin, nin); 
+	output out; 
+	input pin, nin; 
+	voltage out, pin, nin; 
+	analog 
+		V(out) <+ idt(V(pin,nin)); 
+endmodule 
+

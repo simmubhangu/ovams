@@ -1,0 +1,15 @@
+
+   disable assertion that failes to compile with gcc-4.0.0 (shipped with OSX 10.4/PPC)
+   due to implicit cast to integer type:
+
+--- llvm/lib/VMCore/Type.cpp-orig	2009-01-10 17:31:47.000000000 +0100
++++ llvm/lib/VMCore/Type.cpp	2009-01-10 17:31:52.000000000 +0100
+@@ -877,7 +877,7 @@ public:
+     // Otherwise, we are changing one subelement type into another.  Clearly the
+     // OldType must have been abstract, making us abstract.
+     assert(Ty->isAbstract() && "Refining a non-abstract type!");
+-    assert(OldType != NewType);
++//  assert(OldType != NewType);
+ 
+     // Make a temporary type holder for the type so that it doesn't disappear on
+     // us when we erase the entry from the map.

@@ -1,0 +1,40 @@
+
+module comparator(cout, inp, inm); 
+	output cout; 
+	input inp, inm; 
+	electrical cout, inp, inm; 
+	parameter real td = 1n, tr = 1n, tf = 1n; 
+	real vcout; 
+
+	analog begin 
+		@(cross(V(inp) - V(inm), 0)) 
+			vcout = ((V(inp) > V(inm)) ? 1 : 0); 
+		V(cout) <+ transition(vcout, td, tr, tf); 
+	end 
+endmodule 
+
+
+module integrator(out, in); 
+	output out; 
+	input in; 
+	electrical in, out; 
+	parameter real gain = 1.0; 
+	parameter real ic = 0.0; 
+
+	analog begin 
+		V(out) <+ gain*idt(V(in), ic); 
+	end 
+endmodule 
+
+
+module sigmadelta(out, aref, in); 
+	output out; 
+	input aref, in; 
+	ground gnd; 
+
+	comparator C1(.cout(aa0), .inp(in), .inm(aa2)); 
+	integrator #(1.0) I1(.out(aa1), .in(aa0)); 
+	comparator C2(out, aa1, gnd); 
+	d2a #(.width(1)) D1(aa2, aref, out); // a D/A converter 
+endmodule 
+

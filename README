@@ -1,0 +1,33 @@
+Hi,
+
+this is a Verilog-AMS 2.3 Parser Frontend. Publicly available Verilog-A and 
+Verilog-AMS-2.3 files are preprocessed and parsed correctly. The parse tree 
+is internally stored in a VPI-object-tree representation, but no elaboration,
+compilation or synthesis is performed. In addition to the parser you find a
+simple arbitrary-precision 4-state-Verilog-vector arithmetic implementation
+(cf. vec4state.c).
+
+I started working on this some while ago as proof-of-concept. Unfortunately I
+will probably not find the required time to continue this project anytime soon.
+
+In the hope that this work may be useful or inspiring to others I nevertheless
+release this fragment on SourceForge. Please contact me if you need repository
+access, want to take over maintenance and administrator rights for the project
+page. Visit the Sourceforge project pages
+
+    http://ovams.sourceforge.net/
+
+                and
+
+    http://sourceforge.net/projects/ovams/
+
+to access the repository. In order to check out code, dependencies, build and
+exercise the testbench, type:
+
+    $ git clone http://git.code.sf.net/p/ovams/code ovams
+    $ cd ovams
+    $ make
+    $ make check
+
+Best regards, Jack Jost
+

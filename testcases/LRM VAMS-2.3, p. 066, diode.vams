@@ -1,0 +1,15 @@
+
+module diode(a,c); 
+	inout a, c; 
+	electrical a, c; 
+	parameter real IS = 1.0e-14; 
+	real idio; 
+	(*desc="small-signal conductance"*) 
+	real gdio; 
+	analog begin 
+		idio = IS * (limexp(V(a,c)/$vt) - 1); 
+		gdio = ddx(idio, V(a)); 
+		I(a,c) <+ idio; 
+	end 
+endmodule
+

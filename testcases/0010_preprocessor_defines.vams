@@ -1,0 +1,28 @@
+`include "constants.vams"
+
+`define \Esc@ped 123
+
+`define PLUS(a,b) (a) + (b)
+
+`define MULTILINE(a, b) (a) \
+			* (b)
+
+`define IDENTIFIER_WITH_DOLLAR_$IGN(s) "$"
+
+`undef none
+
+`define TOP(a,b) a + b
+
+module x;
+	parameter pi = `M_PI;
+	parameter escaped = `\Esc@ped ; 
+	parameter plus = `PLUS(1, 2);
+	parameter mu = 1000*`P_U0;
+	parameter multiline1 = `MULTILINE(3,`M_PI);
+	parameter multiline2 = `MULTILINE(3,`PLUS(4,5));
+	parameter multiline3 = `MULTILINE(3,`MULTILINE(4,5));
+	parameter dollar_identifier = `IDENTIFIER_WITH_DOLLAR_$IGN(1);
+	// should expand to "b + 1 + 42 + a" (cf. 1800-2012.pdf, p. 643):
+	parameter top = `TOP( `TOP(b,1), `TOP(42,a) );
+endmodule
+

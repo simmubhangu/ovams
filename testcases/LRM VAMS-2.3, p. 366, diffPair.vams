@@ -1,0 +1,7 @@
+
+module diffPair (c1, b1, e, b2, c2); 
+	electrical c1, b1, e, b2, c2; 
+	vertNPN Q1 (c1, b1, e); 
+	vertNPN Q2 (.c(c2), .b(b2), .e(e));
+endmodule 
+

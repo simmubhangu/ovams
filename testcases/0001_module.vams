@@ -1,0 +1,11 @@
+
+module m0 ; endmodule
+
+module m1 () ; endmodule
+
+module m2 (aa) ; endmodule
+
+module m3 (aa, bb, cc) ; endmodule
+
+module m4 (input aa, inout bb, output cc) ; endmodule
+

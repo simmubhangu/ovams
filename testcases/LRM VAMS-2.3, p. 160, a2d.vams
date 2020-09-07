@@ -1,0 +1,9 @@
+
+connectmodule a2d (out, in); 
+	output out; 
+	input in; 
+	ddiscrete out; 
+	electrical in; 
+	// insert connect module behavioral here 
+endmodule 
+

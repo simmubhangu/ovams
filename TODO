@@ -1,0 +1,31 @@
+
+-------------------------------- vams_parse.g:
+
+ - attributes are leaking memory, and they are somewhat redundantly distributed/cloned in the AST.
+ - net charge strength, drive strength
+ - reg/net/var etc. vpiName, assignment
+ - specify timing paths
+ - event decls
+ - dimensional array cloning (requires VPI expression evaluation)
+ - generate evaluation/elaboration (requires VPI expression evaluation)
+ - second pass: resolve references 
+ - reg/var/param etc. in scopes
+ - input/output: done and correct or not yet complete? 
+
+-------------------------------- general:
+
+ - (constant) VPI expression evaluation
+ - +plusargs+
+ - parser: syntax error callback function
+ - parser: `line should be allowed everywhere. make it a whitespace rule.
+ - vpp.l: check: what should be warnings, what errors?
+ - lexer and parse time/memory statistics
+ - (?) vpp.l: conflicts between strings and `defines?
+ - (?) move library grammar into separate file
+
+-------------------------------- dparser:
+
+ - simplify syntax error callback function interface
+ - introduce check for loops to avoid unbounded growth of parser memory allocation
+ - optimize redundant state machine copies for terminals
+
